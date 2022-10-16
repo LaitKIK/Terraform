@@ -28,7 +28,7 @@ resource "aws_s3_bucket" "tf_state" {
   object_lock_configuration {
     object_lock_enabled = "Enabled"
   }
-  aws_s3_bucket_server_side_encryption_configuration {
+  server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
         kms_master_key_id = aws_kms_key.s3_kms_encryption_key.arn
@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "tf_state" {
     }
   }
   lifecycle {
-    enabled = true
+    prevent_destroy = true
   }
   tags = {
     "Name" = "s3_tf_state"
@@ -46,7 +46,7 @@ resource "aws_s3_bucket" "tf_state" {
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_tf_access" {
-    bucket = aws_s3_bucket.tf_state
+    bucket = aws_s3_bucket.tf_state.id
     block_public_acls       = true
     block_public_policy     = true
     ignore_public_acls      = true
