@@ -9,5 +9,14 @@ terraform {
 
 #Using credential by env variables like AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
+  default_tags {
+    tags = {
+      "ManagedBy"   = "Terraform"
+      "Environment" = "TestDev"
+      "Owner"       = "LaitKIK"
+      "Employee"    = "DevOps"
+
+    }
+  }
 }
