@@ -1,19 +1,19 @@
 #Create backend resource for saving state data
 
 resource "aws_dynamodb_table" "tf_state" {
-    name            = "tf_state_db_table"
-    billing_mode    = "PROVISIONED"
-    read_capacity   = 5
-    write_capacity  = 5
-    hash_key        = "UserId"
-    attribute {
-      name = "UserId"
-      type = "S"
-    }
-    tags = {
-      "Name" = "table_tf_state"
-      "Description" = "table for save lock state tf data"
-    }
+  name            = "tf_state_db_table"
+  billing_mode    = "PROVISIONED"
+  read_capacity   = 5
+  write_capacity  = 5
+  hash_key        = "UserId"
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+  tags = {
+    "Name"        = "table_tf_state"
+    "Description" = "table for save lock state tf data"
+  }
 }
 
 resource "aws_kms_key" "s3_kms_encryption_key" {
@@ -21,7 +21,7 @@ resource "aws_kms_key" "s3_kms_encryption_key" {
 }
 
 resource "aws_s3_bucket" "tf_state" {
-  bucket = var.s3_tf_bucket_name
+  bucket    = var.s3_tf_bucket_name
   versioning {
     enabled = true
   }
@@ -40,15 +40,15 @@ resource "aws_s3_bucket" "tf_state" {
     prevent_destroy = true
   }
   tags = {
-    "Name" = "s3_tf_state"
+    "Name"        = "s3_tf_state"
     "Description" = "s3 for  save lock state tf files"
   }
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_tf_access" {
-    bucket = aws_s3_bucket.tf_state.id
-    block_public_acls       = true
-    block_public_policy     = true
-    ignore_public_acls      = true
-    restrict_public_buckets = true
+  bucket = aws_s3_bucket.tf_state.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
